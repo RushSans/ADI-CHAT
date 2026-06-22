@@ -1,0 +1,159 @@
+<!-- ============================
+     ФАЙЛ auth.html
+     Страница входа и регистрации
+     ============================ -->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <!-- ============================
+         МЕТА-ДАННЫЕ
+         ============================ -->
+    
+    <!-- Кодировка UTF-8 для поддержки русского языка -->
+    <meta charset="UTF-8">
+    
+    <!-- Настройка для мобильных устройств -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Заголовок страницы (отображается во вкладке браузера) -->
+    <title>ADI CHAT — Авторизация</title>
+    
+    <!-- Подключение CSS-стилей -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- ============================
+         КОНТЕЙНЕР АВТОРИЗАЦИИ
+         ============================ -->
+    
+    <div class="auth-container">
+        
+        <!-- ============================
+             КАРТОЧКА ВХОДА
+             ============================ -->
+        
+        <div class="auth-card" id="loginCard" {% if show_register %}style="display: none;"{% endif %}>
+            
+            <!-- Заголовок -->
+            <h2>ADI CHAT</h2>
+            
+            <!-- Блок с ошибкой (показывается только если есть ошибка и мы не в режиме регистрации) -->
+            {% if error and not show_register %}
+            <div class="auth-error">{{ error }}</div>
+            {% endif %}
+            
+            <!-- Форма входа -->
+            <form action="/login" method="post">
+                
+                <!-- Поле ввода email -->
+                <div class="input-group">
+                    <input type="email" 
+                           name="email" 
+                           placeholder="dia_design@mail.ru" 
+                           required 
+                           autocomplete="email">
+                </div>
+                
+                <!-- Поле ввода пароля -->
+                <div class="input-group">
+                    <input type="password" 
+                           name="password" 
+                           placeholder="••••••••••••" 
+                           required 
+                           minlength="6" 
+                           autocomplete="current-password">
+                </div>
+                
+                <!-- Кнопка входа -->
+                <button type="submit" class="btn-primary">Войти</button>
+                
+                <!-- Кнопка переключения на регистрацию -->
+                <button type="button" class="btn-primary btn-secondary" onclick="toggleAuth()">Регистрация</button>
+                
+            </form>
+        </div>
+
+        <!-- ============================
+             КАРТОЧКА РЕГИСТРАЦИИ
+             ============================ -->
+        
+        <div class="auth-card" id="registerCard" {% if not show_register %}style="display: none;"{% endif %}>
+            
+            <!-- Заголовок -->
+            <h2>Создать аккаунт</h2>
+            
+            <!-- Блок с ошибкой (показывается только если есть ошибка и мы в режиме регистрации) -->
+            {% if error and show_register %}
+            <div class="auth-error">{{ error }}</div>
+            {% endif %}
+            
+            <!-- Форма регистрации -->
+            <form action="/register" method="post">
+                
+                <!-- Поле ввода имени пользователя -->
+                <div class="input-group">
+                    <input type="text" 
+                           name="username" 
+                           placeholder="Артём" 
+                           required 
+                           minlength="2" 
+                           maxlength="32" 
+                           autocomplete="username">
+                </div>
+                
+                <!-- Поле ввода email -->
+                <div class="input-group">
+                    <input type="email" 
+                           name="email" 
+                           placeholder="artem17yo@gmail.com" 
+                           required 
+                           autocomplete="email">
+                </div>
+                
+                <!-- Поле ввода пароля -->
+                <div class="input-group">
+                    <input type="password" 
+                           name="password" 
+                           placeholder="Минимум 6 символов" 
+                           required 
+                           minlength="6" 
+                           autocomplete="new-password">
+                </div>
+                
+                <!-- Кнопка регистрации -->
+                <button type="submit" class="btn-primary">Регистрация</button>
+                
+                <!-- Кнопка возврата ко входу -->
+                <button type="button" class="btn-primary btn-secondary btn-back" onclick="toggleAuth()">Назад ко входу</button>
+                
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================
+         JAVASCRIPT ДЛЯ ПЕРЕКЛЮЧЕНИЯ
+         ============================ -->
+    
+    <script>
+        /**
+         * Переключает видимость между карточками входа и регистрации
+         */
+        function toggleAuth() {
+            // Получаем элементы карточек
+            var login = document.getElementById('loginCard');
+            var reg = document.getElementById('registerCard');
+            
+            // Если карточка входа скрыта - показываем её и скрываем регистрацию
+            if (login.style.display === 'none') {
+                login.style.display = 'block';
+                reg.style.display = 'none';
+            } else {
+                // Иначе скрываем вход и показываем регистрацию
+                login.style.display = 'none';
+                reg.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!-- ============================
+     ФАЙЛ chat.html
+     Страница чата (наследуется от base.html)
+     Отображает диалог с выбранным собеседником
+     ============================ -->
+
+<!-- Расширяем базовый шаблон -->
+{% extends "base.html" %}
+
+<!-- ============================
+     БЛОК ЗАГОЛОВКА
+     ============================ -->
+
+{% block title %}ADI CHAT — Диалоги{% endblock %}
+
+<!-- ============================
+     БЛОК ОСНОВНОГО КОНТЕНТА
+     ============================ -->
+
+{% block main %}
+<div class="main-chat">
+    
+    <!-- ============================
+         ЕСЛИ ВЫБРАН СОБЕСЕДНИК
+         ============================ -->
+    
+    {% if active_partner %}
+    
+    <!-- --- ЗАГОЛОВОК ЧАТА --- -->
+    <div class="chat-header">
+        <!-- Информация о собеседнике -->
+        <div class="chat-header-info">
+            <!-- Имя собеседника -->
+            <div class="chat-user-title">{{ active_partner.username }}</div>
+            <!-- Статус собеседника -->
+            <div class="chat-partner-status">{{ active_partner.status }}</div>
+        </div>
+        
+        <!-- Действия в заголовке -->
+        <div class="chat-header-actions">
+            <!-- Кнопка перехода в профиль -->
+            <a href="/profile" class="header-icon-btn" title="Профиль">👤</a>
+            
+            <!-- Кнопка удаления чата -->
+            <button type="button" class="header-icon-btn delete-btn" id="deleteChatBtn"
+                    data-partner-name="{{ active_partner.username }}" title="Удалить чат">
+                🗑
+            </button>
+        </div>
+    </div>
+
+    <!-- --- КОНТЕЙНЕР СООБЩЕНИЙ --- -->
+    <div class="messages-container" id="msgContainer">
+        
+        <!-- Если есть сообщения -->
+        {% if messages %}
+            <!-- Перебираем все сообщения -->
+            {% for msg in messages %}
+            <div class="msg {% if msg.is_outgoing %}outgoing{% else %}incoming{% endif %}">
+                <!-- Текст сообщения -->
+                {{ msg.text }}
+                
+                <!-- Время (если есть) -->
+                {% if msg.time %}<span class="msg-time">{{ msg.time }}</span>{% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- Если сообщений нет -->
+            <div class="empty-chat">Начните диалог с {{ active_partner.username }}</div>
+        {% endif %}
+    </div>
+
+    <!-- --- ПОЛЕ ВВОДА СООБЩЕНИЯ --- -->
+    <div class="chat-input-area">
+        <!-- Поле ввода текста -->
+        <input type="text" id="msgInput" 
+               placeholder="Напишите сообщение..." 
+               maxlength="2000" 
+               autocomplete="off">
+        
+        <!-- Кнопка отправки (с ID собеседника в data-атрибуте) -->
+        <button class="btn-send" id="sendBtn" data-partner-id="{{ active_partner.id }}">
+            Отправить
+        </button>
+    </div>
+    
+    <!-- ============================
+         ЕСЛИ СОБЕСЕДНИК НЕ ВЫБРАН
+         ============================ -->
+    
+    {% else %}
+    <div class="no-chat-selected">
+        <h3>Выберите собеседника</h3>
+        <p>Или зарегистрируйте ещё одного пользователя, чтобы начать переписку.</p>
+    </div>
+    {% endif %}
+    
+</div>
+{% endblock %}
+
+<!-- ============================
+     БЛОК МОДАЛЬНЫХ ОКОН
+     ============================ -->
+
+{% block modals %}
+<!-- Модальное окно подтверждения удаления чата -->
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal-card">
+        <!-- Заголовок (динамически меняется через JS) -->
+        <h3 class="modal-title" id="deleteModalTitle">Удалить чат?</h3>
+        
+        <!-- Описание -->
+        <p class="modal-desc">Это действие нельзя будет отменить.</p>
+        
+        <!-- Кнопки -->
+        <div class="modal-actions">
+            <!-- Кнопка "Отмена" (data-action для поиска в JS) -->
+            <button type="button" class="btn-modal btn-cancel" data-action="cancel">
+                Отмена
+            </button>
+            
+            <!-- Кнопка "Удалить" -->
+            <button type="button" class="btn-modal btn-danger" id="confirmDeleteBtn">
+                Да, удалить
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- ============================
+     БЛОК СКРИПТОВ
+     ============================ -->
+
+{% block scripts %}
+<!-- Подключаем JavaScript для чата -->
+<script src="/static/js/chat.js"></script>
+{% endblock %}
