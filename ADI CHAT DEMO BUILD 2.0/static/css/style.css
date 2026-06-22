@@ -1,0 +1,841 @@
+/* ============================
+   ФАЙЛ СТИЛЕЙ (style.css)
+   Отвечает за внешний вид всего приложения
+   ============================ */
+
+/* ============================
+   1. ПЕРЕМЕННЫЕ (CSS Custom Properties)
+   Определяет основные цвета и параметры для всего приложения
+   ============================ */
+
+:root {
+    /* Темные цвета для фона */
+    --bg-dark: #0b0c16;           /* Основной темный фон */
+    --panel-dark: #121428;        /* Фон панелей (консоль) */
+    
+    /* Градиенты для кнопок и заголовков */
+    --gradient-start: #7868e6;    /* Начало градиента (фиолетовый) */
+    --gradient-end: #b8b5ff;      /* Конец градиента (светло-фиолетовый) */
+    
+    /* Цвета текста */
+    --text-white: #ffffff;        /* Белый текст */
+    --text-muted: #a2a5b9;        /* Приглушенный текст (серый) */
+    
+    /* Цвет кнопок */
+    --green-btn: #00b894;         /* Зеленая кнопка (регистрация) */
+}
+
+/* ============================
+   2. ГЛОБАЛЬНЫЕ СТИЛИ
+   Базовые настройки для всей страницы
+   ============================ */
+
+body, html {
+    margin: 0;                     /* Убираем отступы */
+    padding: 0;                   /* Убираем внутренние отступы */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  /* Шрифт */
+    background-color: var(--bg-dark);  /* Темный фон */
+    color: var(--text-white);     /* Белый текст */
+    height: 100%;                 /* На всю высоту экрана */
+    overflow: hidden;             /* Скрываем скролл на уровне body */
+}
+
+/* ============================
+   3. АНИМАЦИИ
+   ============================ */
+
+/* Анимация появления элементов снизу вверх */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;               /* Начинаем с прозрачности 0 */
+        transform: translateY(20px);  /* Сдвигаем вниз на 20px */
+    }
+    to {
+        opacity: 1;               /* Заканчиваем с прозрачностью 1 */
+        transform: translateY(0); /* Возвращаем на место */
+    }
+}
+
+/* Анимация пульсации для логов (красные логи) */
+@keyframes pulseLog {
+    0% { 
+        box-shadow: 0 0 5px rgba(255, 77, 77, 0.2);  /* Начальная тень */
+    }
+    50% { 
+        box-shadow: 0 0 15px rgba(255, 77, 77, 0.4);  /* Усиленная тень */
+    }
+    100% { 
+        box-shadow: 0 0 5px rgba(255, 77, 77, 0.2);   /* Возврат к начальной */
+    }
+}
+
+/* ============================
+   4. СТРАНИЦА АВТОРИЗАЦИИ
+   ============================ */
+
+/* Контейнер для страницы входа/регистрации */
+.auth-container {
+    display: flex;                /* Flex-контейнер */
+    justify-content: center;      /* Центрирование по горизонтали */
+    align-items: center;          /* Центрирование по вертикали */
+    height: 100vh;               /* На всю высоту экрана */
+    background: linear-gradient(135deg, #10122b 0%, #05060f 100%);  /* Градиентный фон */
+}
+
+/* Карточка авторизации */
+.auth-card {
+    background: linear-gradient(180deg, #5849c4 0%, #7653d9 100%);  /* Градиент фиолетовый */
+    padding: 40px;               /* Внутренние отступы */
+    border-radius: 30px;         /* Скругление углов */
+    width: 340px;                /* Фиксированная ширина */
+    text-align: center;          /* Текст по центру */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);  /* Тень */
+    animation: fadeInUp 0.6s ease-out;  /* Анимация появления */
+}
+
+.auth-card h2 {
+    margin-bottom: 30px;         /* Отступ снизу */
+    font-weight: 600;            /* Полужирный */
+}
+
+/* Группа полей ввода */
+.input-group {
+    margin-bottom: 20px;         /* Отступ между полями */
+}
+
+/* Стили для полей ввода */
+.input-group input {
+    width: 100%;                 /* На всю ширину */
+    padding: 14px 20px;          /* Внутренние отступы */
+    border: none;                /* Убираем рамку */
+    border-radius: 15px;         /* Скругление */
+    background-color: rgba(255, 255, 255, 0.9);  /* Белый с прозрачностью */
+    font-size: 15px;             /* Размер шрифта */
+    box-sizing: border-box;      /* Учет padding в ширине */
+    transition: all 0.3s ease;   /* Плавный переход при фокусе */
+}
+
+/* Стиль при фокусе (клике на поле) */
+.input-group input:focus {
+    outline: none;               /* Убираем стандартную обводку */
+    transform: scale(1.02);      /* Увеличиваем на 2% */
+    background-color: #fff;      /* Полностью белый фон */
+}
+
+/* ============================
+   5. КНОПКИ
+   ============================ */
+
+/* Основная кнопка (вход) */
+.btn-primary {
+    width: 100%;                 /* На всю ширину */
+    padding: 14px;               /* Внутренние отступы */
+    border: none;                /* Убираем рамку */
+    border-radius: 15px;         /* Скругление */
+    background-color: #0b0c16;   /* Темный фон */
+    color: white;                /* Белый текст */
+    font-size: 16px;             /* Размер шрифта */
+    font-weight: bold;           /* Жирный */
+    cursor: pointer;             /* Курсор-указатель */
+    transition: background 0.3s, transform 0.1s;  /* Плавные переходы */
+}
+
+/* Эффект при наведении */
+.btn-primary:hover {
+    background-color: #1a1c33;   /* Светлее фон */
+}
+
+/* Эффект при нажатии */
+.btn-primary:active {
+    transform: scale(0.98);      /* Легкое уменьшение */
+}
+
+/* Вторичная кнопка (регистрация) */
+.btn-secondary {
+    background-color: var(--green-btn);  /* Зеленая */
+    margin-top: 10px;            /* Отступ сверху */
+}
+
+/* Кнопка "Назад" */
+.btn-back {
+    background-color: #7868e6;   /* Фиолетовая */
+}
+
+/* Сообщение об ошибке авторизации */
+.auth-error {
+    background: rgba(255, 77, 77, 0.2);     /* Красный фон с прозрачностью */
+    border: 1px solid rgba(255, 77, 77, 0.5);  /* Красная рамка */
+    color: #ffe0e0;              /* Светло-красный текст */
+    padding: 10px 14px;          /* Внутренние отступы */
+    border-radius: 12px;         /* Скругление */
+    font-size: 14px;             /* Размер шрифта */
+    margin-bottom: 20px;         /* Отступ снизу */
+    text-align: left;            /* Текст слева */
+}
+
+/* ============================
+   6. ОСНОВНАЯ СТРУКТУРА ПРИЛОЖЕНИЯ
+   ============================ */
+
+/* Основной макет приложения (после входа) */
+.app-layout {
+    display: flex;               /* Flex-контейнер */
+    height: 100vh;              /* На всю высоту */
+}
+
+/* ============================
+   7. БОКОВАЯ ПАНЕЛЬ (СПИСОК ЧАТОВ)
+   ============================ */
+
+.sidebar {
+    width: 300px;               /* Фиксированная ширина */
+    background-color: #f5f6fa;  /* Светлый фон */
+    color: #333;                /* Темный текст */
+    display: flex;              /* Flex-контейнер */
+    flex-direction: column;     /* Вертикальное расположение */
+    border-right: 1px solid #e1e4e8;  /* Правая граница */
+}
+
+/* Заголовок боковой панели */
+.sidebar-header {
+    padding: 20px;              /* Внутренние отступы */
+    font-weight: bold;          /* Жирный */
+    font-size: 18px;            /* Размер шрифта */
+    border-bottom: 1px solid #e1e4e8;  /* Нижняя граница */
+    display: flex;              /* Flex-контейнер */
+    justify-content: space-between;  /* Распределение по краям */
+    align-items: center;        /* Центрирование по вертикали */
+    gap: 10px;                 /* Расстояние между элементами */
+}
+
+/* Бейдж текущего пользователя */
+.current-user-badge {
+    font-size: 12px;            /* Маленький шрифт */
+    font-weight: 600;           /* Полужирный */
+    background: #5849c4;        /* Фиолетовый фон */
+    color: white;               /* Белый текст */
+    padding: 4px 10px;          /* Внутренние отступы */
+    border-radius: 20px;        /* Скругление */
+    white-space: nowrap;        /* Запрет переноса строки */
+    text-decoration: none;      /* Убираем подчеркивание */
+    transition: opacity 0.2s;   /* Плавное изменение прозрачности */
+}
+
+.current-user-badge:hover {
+    opacity: 0.85;              /* Легкое затемнение при наведении */
+}
+
+/* Список чатов (скроллится) */
+.chats-list {
+    flex: 1;                    /* Занимает всё свободное место */
+    overflow-y: auto;           /* Вертикальный скролл */
+}
+
+/* Один элемент в списке чатов */
+.chat-item {
+    display: flex;              /* Flex-контейнер */
+    align-items: center;        /* Центрирование по вертикали */
+    padding: 15px 20px;         /* Внутренние отступы */
+    cursor: pointer;            /* Курсор-указатель */
+    transition: background 0.2s;  /* Плавный фон */
+    text-decoration: none;      /* Убираем подчеркивание */
+    color: inherit;             /* Наследуем цвет */
+}
+
+/* Активный чат (выделенный) */
+.chat-item.active {
+    background-color: #e3e8f5;  /* Светло-фиолетовый фон */
+    border-left: 4px solid #5849c4;  /* Фиолетовая полоса слева */
+}
+
+/* Эффект при наведении на чат */
+.chat-item:hover {
+    background-color: #edf0f5;  /* Светлый фон */
+}
+
+/* Пустые состояния */
+.empty-state,
+.empty-chat,
+.no-chat-selected {
+    padding: 30px 20px;         /* Внутренние отступы */
+    text-align: center;         /* Текст по центру */
+    color: #888;                /* Серый текст */
+    font-size: 14px;            /* Размер шрифта */
+}
+
+/* ============================
+   8. АВАТАРКИ
+   ============================ */
+
+.avatar {
+    width: 40px;                /* Ширина */
+    height: 40px;               /* Высота */
+    border-radius: 50%;         /* Круглая форма */
+    margin-right: 15px;         /* Отступ справа */
+}
+
+/* Информация о пользователе в чате */
+.chat-info .name {
+    font-weight: 600;           /* Полужирный */
+    font-size: 15px;            /* Размер шрифта */
+}
+
+.chat-info .status {
+    font-size: 13px;            /* Размер шрифта */
+    color: #2ecc71;             /* Зеленый цвет (онлайн) */
+}
+
+/* ============================
+   9. ОСНОВНАЯ ОБЛАСТЬ ЧАТА
+   ============================ */
+
+.main-chat {
+    flex: 1;                    /* Занимает всё свободное место */
+    display: flex;              /* Flex-контейнер */
+    flex-direction: column;     /* Вертикальное расположение */
+    background-color: #ffffff;  /* Белый фон */
+    color: #333;                /* Темный текст */
+}
+
+/* Заголовок чата (с именем собеседника) */
+.chat-header {
+    padding: 15px 25px;         /* Внутренние отступы */
+    background: linear-gradient(90deg, #5849c4, #7653d9);  /* Градиент */
+    color: white;               /* Белый текст */
+    font-weight: bold;          /* Жирный */
+    display: flex;              /* Flex-контейнер */
+    justify-content: space-between;  /* Распределение по краям */
+    align-items: center;        /* Центрирование по вертикали */
+}
+
+/* Статус собеседника в заголовке */
+.chat-partner-status {
+    font-size: 13px;            /* Размер шрифта */
+    opacity: 0.85;              /* Легкая прозрачность */
+    font-weight: normal;        /* Обычный вес */
+}
+
+/* ============================
+   10. СООБЩЕНИЯ
+   ============================ */
+
+/* Контейнер для сообщений */
+.messages-container {
+    flex: 1;                    /* Занимает всё свободное место */
+    padding: 20px;              /* Внутренние отступы */
+    overflow-y: auto;           /* Вертикальный скролл */
+    display: flex;              /* Flex-контейнер */
+    flex-direction: column;     /* Вертикальное расположение */
+    gap: 15px;                 /* Расстояние между сообщениями */
+}
+
+/* Одно сообщение */
+.msg {
+    max-width: 60%;             /* Максимальная ширина */
+    padding: 12px 18px;         /* Внутренние отступы */
+    border-radius: 20px;        /* Скругление */
+    font-size: 15px;            /* Размер шрифта */
+    animation: fadeInUp 0.3s ease-out;  /* Анимация появления */
+}
+
+/* Входящее сообщение (от собеседника) */
+.msg.incoming {
+    background-color: #e9ecef;  /* Светло-серый фон */
+    align-self: flex-start;     /* Выравнивание слева */
+    border-top-left-radius: 5px;  /* Скошенный угол */
+}
+
+/* Исходящее сообщение (от текущего пользователя) */
+.msg.outgoing {
+    background: linear-gradient(90deg, #5849c4, #7653d9);  /* Градиент */
+    color: white;               /* Белый текст */
+    align-self: flex-end;       /* Выравнивание справа */
+    border-top-right-radius: 5px;  /* Скошенный угол */
+}
+
+/* Время сообщения */
+.msg-time {
+    display: block;             /* Блочный элемент */
+    font-size: 11px;            /* Маленький шрифт */
+    opacity: 0.7;               /* Прозрачность */
+    margin-top: 4px;            /* Отступ сверху */
+    text-align: right;          /* Текст справа */
+}
+
+/* ============================
+   11. ПОЛЕ ВВОДА СООБЩЕНИЯ
+   ============================ */
+
+.chat-input-area {
+    padding: 20px;              /* Внутренние отступы */
+    border-top: 1px solid #e1e4e8;  /* Верхняя граница */
+    display: flex;              /* Flex-контейнер */
+    gap: 15px;                 /* Расстояние между элементами */
+}
+
+.chat-input-area input {
+    flex: 1;                    /* Занимает всё свободное место */
+    padding: 15px;              /* Внутренние отступы */
+    border: 1px solid #e1e4e8;  /* Рамка */
+    border-radius: 12px;        /* Скругление */
+    font-size: 15px;            /* Размер шрифта */
+}
+
+/* ============================
+   12. КНОПКИ В ЧАТЕ
+   ============================ */
+
+/* Кнопка отправки сообщения */
+.btn-send {
+    width: auto;                /* Автоматическая ширина */
+    padding: 0 30px;            /* Внутренние отступы */
+    border: none;               /* Убираем рамку */
+    border-radius: 12px;        /* Скругление */
+    background: linear-gradient(90deg, #5849c4, #7653d9);  /* Градиент */
+    color: white;               /* Белый текст */
+    font-size: 15px;            /* Размер шрифта */
+    font-weight: bold;          /* Жирный */
+    cursor: pointer;            /* Курсор-указатель */
+    transition: opacity 0.2s;   /* Плавная прозрачность */
+}
+
+.btn-send:hover {
+    opacity: 0.9;              /* Легкое затемнение */
+}
+
+.btn-send:disabled {
+    opacity: 0.5;              /* Полупрозрачная */
+    cursor: not-allowed;       /* Курсор "недоступно" */
+}
+
+/* ============================
+   13. КОНСОЛЬ (ПАНЕЛЬ ЛОГОВ)
+   ============================ */
+
+.console-panel {
+    width: 320px;               /* Фиксированная ширина */
+    background-color: var(--panel-dark);  /* Темный фон */
+    padding: 20px;              /* Внутренние отступы */
+    box-sizing: border-box;     /* Учет padding в ширине */
+    border-left: 1px solid #1f233d;  /* Левая граница */
+}
+
+.console-title {
+    font-size: 12px;            /* Маленький шрифт */
+    font-weight: bold;          /* Жирный */
+    color: var(--text-white);   /* Белый цвет */
+    letter-spacing: 1px;        /* Расстояние между буквами */
+    margin-bottom: 20px;        /* Отступ снизу */
+}
+
+/* Одна запись в логе */
+.log-entry {
+    padding: 10px 15px;         /* Внутренние отступы */
+    border-radius: 8px;         /* Скругление */
+    font-family: 'Courier New', Courier, monospace;  /* Моноширинный шрифт */
+    font-size: 12px;            /* Размер шрифта */
+    margin-bottom: 10px;        /* Отступ снизу */
+    animation: fadeInUp 0.4s ease-out;  /* Анимация появления */
+}
+
+/* Красный лог (ошибки, важные события) */
+.log-entry.red {
+    background-color: rgba(255, 77, 77, 0.15);  /* Красный с прозрачностью */
+    color: #ff4d4d;             /* Красный текст */
+    border: 1px solid rgba(255, 77, 77, 0.3);  /* Красная рамка */
+    animation: pulseLog 3s infinite;  /* Пульсирующая анимация */
+}
+
+/* Синий лог (системные события) */
+.log-entry.blue {
+    background-color: rgba(0, 168, 255, 0.15);  /* Синий с прозрачностью */
+    color: #00a8ff;             /* Синий текст */
+    border: 1px solid rgba(0, 168, 255, 0.3);  /* Синяя рамка */
+}
+
+/* ============================
+   14. НИЖНЯЯ НАВИГАЦИЯ
+   ============================ */
+
+.bottom-nav {
+    margin-top: auto;           /* Прижимаем к низу */
+    padding: 15px;              /* Внутренние отступы */
+    display: flex;              /* Flex-контейнер */
+    justify-content: space-around;  /* Равномерное распределение */
+    background-color: #01937c;  /* Темно-зеленый фон */
+    border-radius: 10px;        /* Скругление */
+    margin: 15px;               /* Внешние отступы */
+}
+
+/* Кнопка навигации */
+.nav-btn {
+    color: white;               /* Белый текст */
+    text-decoration: none;      /* Убираем подчеркивание */
+    font-size: 13px;            /* Размер шрифта */
+    display: flex;              /* Flex-контейнер */
+    flex-direction: column;     /* Вертикальное расположение */
+    align-items: center;        /* Центрирование по горизонтали */
+    gap: 4px;                  /* Расстояние между элементами */
+    opacity: 0.85;              /* Прозрачность */
+    transition: opacity 0.2s;   /* Плавное изменение */
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+    opacity: 1;                 /* Полная непрозрачность при наведении/активности */
+}
+
+.nav-icon {
+    font-size: 18px;            /* Размер иконки */
+}
+
+/* ============================
+   15. КНОПКА "НАЗАД"
+   ============================ */
+
+.sidebar-top {
+    padding: 12px 16px 0;       /* Внутренние отступы */
+}
+
+.back-btn {
+    display: inline-flex;       /* Inline-flex контейнер */
+    align-items: center;        /* Центрирование по вертикали */
+    justify-content: center;    /* Центрирование по горизонтали */
+    width: 36px;                /* Ширина */
+    height: 36px;               /* Высота */
+    border-radius: 50%;         /* Круглая форма */
+    color: #333;                /* Темный цвет */
+    text-decoration: none;      /* Убираем подчеркивание */
+    font-size: 20px;            /* Размер шрифта */
+    transition: background 0.2s;  /* Плавный фон */
+}
+
+.back-btn:hover {
+    background: #e3e8f5;        /* Светло-фиолетовый фон */
+}
+
+/* ============================
+   16. КНОПКИ В ЗАГОЛОВКЕ ЧАТА
+   ============================ */
+
+.sidebar-spacer {
+    flex: 1;                    /* Занимает свободное место */
+}
+
+.main-content {
+    flex: 1;                    /* Занимает свободное место */
+    display: flex;              /* Flex-контейнер */
+    flex-direction: column;     /* Вертикальное расположение */
+    min-width: 0;               /* Разрешаем сжатие */
+}
+
+.chat-header-info {
+    flex: 1;                    /* Занимает свободное место */
+}
+
+.chat-header-actions {
+    display: flex;              /* Flex-контейнер */
+    gap: 8px;                  /* Расстояние между кнопками */
+    align-items: center;        /* Центрирование по вертикали */
+}
+
+/* Иконка-кнопка в заголовке */
+.header-icon-btn {
+    background: rgba(255, 255, 255, 0.15);  /* Белый с прозрачностью */
+    border: none;               /* Убираем рамку */
+    border-radius: 8px;         /* Скругление */
+    width: 36px;                /* Ширина */
+    height: 36px;               /* Высота */
+    cursor: pointer;            /* Курсор-указатель */
+    font-size: 16px;            /* Размер шрифта */
+    display: flex;              /* Flex-контейнер */
+    align-items: center;        /* Центрирование по вертикали */
+    justify-content: center;    /* Центрирование по горизонтали */
+    color: white;               /* Белый цвет */
+    text-decoration: none;      /* Убираем подчеркивание */
+    transition: background 0.2s;  /* Плавный фон */
+}
+
+.header-icon-btn:hover {
+    background: rgba(255, 255, 255, 0.25);  /* Более светлый фон */
+}
+
+/* Кнопка удаления (красная при наведении) */
+.delete-btn:hover {
+    background: rgba(255, 77, 77, 0.4);  /* Красный фон */
+}
+
+/* ============================
+   17. МОДАЛЬНОЕ ОКНО
+   ============================ */
+
+/* Затемненный фон модального окна */
+.modal-overlay {
+    display: none;              /* Скрыто по умолчанию */
+    position: fixed;            /* Фиксированное позиционирование */
+    inset: 0;                   /* Растягиваем на весь экран */
+    background: rgba(0, 0, 0, 0.35);  /* Полупрозрачный черный */
+    z-index: 1000;              /* Поверх всего */
+    align-items: center;        /* Центрирование по вертикали */
+    justify-content: center;    /* Центрирование по горизонтали */
+}
+
+.modal-overlay.visible {
+    display: flex;              /* Показываем при добавлении класса visible */
+}
+
+/* Карточка модального окна */
+.modal-card {
+    background: #fff;           /* Белый фон */
+    border-radius: 16px;        /* Скругление */
+    padding: 28px 32px;         /* Внутренние отступы */
+    width: 90%;                 /* Ширина 90% от родителя */
+    max-width: 400px;           /* Максимальная ширина */
+    text-align: center;         /* Текст по центру */
+    color: #333;                /* Темный текст */
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);  /* Тень */
+    animation: fadeInUp 0.25s ease-out;  /* Анимация появления */
+}
+
+.modal-title {
+    margin: 0 0 10px;           /* Отступ снизу */
+    font-size: 18px;            /* Размер шрифта */
+    font-weight: 700;           /* Жирный */
+}
+
+.modal-desc {
+    margin: 0 0 24px;           /* Отступ снизу */
+    font-size: 14px;            /* Размер шрифта */
+    color: #888;                /* Серый текст */
+}
+
+/* Кнопки в модальном окне */
+.modal-actions {
+    display: flex;              /* Flex-контейнер */
+    gap: 12px;                 /* Расстояние между кнопками */
+}
+
+.btn-modal {
+    flex: 1;                    /* Занимает свободное место */
+    padding: 12px 16px;         /* Внутренние отступы */
+    border: none;               /* Убираем рамку */
+    border-radius: 10px;        /* Скругление */
+    font-size: 14px;            /* Размер шрифта */
+    font-weight: 600;           /* Полужирный */
+    cursor: pointer;            /* Курсор-указатель */
+    transition: opacity 0.2s;   /* Плавная прозрачность */
+}
+
+.btn-modal:disabled {
+    opacity: 0.5;              /* Полупрозрачная */
+    cursor: not-allowed;       /* Курсор "недоступно" */
+}
+
+.btn-cancel {
+    background: #f0f0f0;        /* Светло-серый фон */
+    color: #333;                /* Темный текст */
+}
+
+.btn-danger {
+    background: #ff4d4d;        /* Красный фон */
+    color: #fff;                /* Белый текст */
+}
+
+.btn-primary-modal {
+    background: #5849c4;        /* Фиолетовый фон */
+    color: #fff;                /* Белый текст */
+}
+
+/* ============================
+   18. ПЕРЕКЛЮЧАТЕЛИ (TOGGLE)
+   ============================ */
+
+.toggle-row {
+    display: flex;              /* Flex-контейнер */
+    align-items: center;        /* Центрирование по вертикали */
+    gap: 10px;                 /* Расстояние между элементами */
+    margin-bottom: 24px;        /* Отступ снизу */
+    text-align: left;           /* Текст слева */
+    font-size: 14px;            /* Размер шрифта */
+    cursor: pointer;            /* Курсор-указатель */
+}
+
+/* ============================
+   19. СТРАНИЦА ПРОФИЛЯ
+   ============================ */
+
+.profile-page {
+    flex: 1;                    /* Занимает свободное место */
+    background: #fff;           /* Белый фон */
+    color: #333;                /* Темный текст */
+    padding: 40px 60px;         /* Внутренние отступы */
+    overflow-y: auto;           /* Вертикальный скролл */
+}
+
+.profile-header {
+    display: flex;              /* Flex-контейнер */
+    align-items: center;        /* Центрирование по вертикали */
+    gap: 24px;                 /* Расстояние между элементами */
+    margin-bottom: 40px;        /* Отступ снизу */
+}
+
+.profile-avatar {
+    width: 80px;                /* Ширина */
+    height: 80px;               /* Высота */
+    border-radius: 50%;         /* Круглая форма */
+    flex-shrink: 0;             /* Запрет сжатия */
+}
+
+.profile-name {
+    margin: 0 0 8px;            /* Отступ снизу */
+    font-size: 24px;            /* Размер шрифта */
+    font-weight: 700;           /* Жирный */
+}
+
+.profile-status {
+    margin: 0;                  /* Убираем отступы */
+    font-size: 14px;            /* Размер шрифта */
+    color: #888;                /* Серый цвет */
+}
+
+.profile-actions {
+    display: flex;              /* Flex-контейнер */
+    flex-direction: column;     /* Вертикальное расположение */
+    gap: 16px;                 /* Расстояние между элементами */
+    max-width: 480px;           /* Максимальная ширина */
+}
+
+.profile-btn {
+    display: flex;              /* Flex-контейнер */
+    align-items: center;        /* Центрирование по вертикали */
+    gap: 12px;                 /* Расстояние между элементами */
+    padding: 16px 20px;         /* Внутренние отступы */
+    border: 1px solid #e1e4e8;  /* Рамка */
+    border-radius: 12px;        /* Скругление */
+    background: #fff;           /* Белый фон */
+    font-size: 14px;            /* Размер шрифта */
+    color: #333;                /* Темный текст */
+    cursor: pointer;            /* Курсор-указатель */
+    transition: border-color 0.2s, box-shadow 0.2s;  /* Плавные переходы */
+    font-family: inherit;       /* Наследуем шрифт */
+    text-align: left;           /* Текст слева */
+    width: 100%;                /* На всю ширину */
+}
+
+.profile-btn:hover {
+    border-color: #5849c4;      /* Фиолетовая рамка */
+    box-shadow: 0 2px 8px rgba(88, 73, 196, 0.1);  /* Тень */
+}
+
+.profile-btn-icon {
+    font-size: 18px;            /* Размер иконки */
+    flex-shrink: 0;             /* Запрет сжатия */
+}
+
+.btn-status {
+    margin-left: auto;          /* Прижимаем к правому краю */
+    font-size: 12px;            /* Размер шрифта */
+    color: #2ecc71;             /* Зеленый цвет */
+    font-weight: 600;           /* Полужирный */
+}
+
+.profile-logout-form {
+    margin: 0;                  /* Убираем отступы */
+}
+
+.profile-btn-logout {
+    color: #ff4d4d;             /* Красный текст (выход) */
+}
+
+/* ============================
+   20. СТРАНИЦА СОБЫТИЙ
+   ============================ */
+
+.events-page {
+    flex: 1;                    /* Занимает свободное место */
+    background: #fff;           /* Белый фон */
+    color: #333;                /* Темный текст */
+    padding: 40px 60px;         /* Внутренние отступы */
+    overflow-y: auto;           /* Вертикальный скролл */
+}
+
+.events-title {
+    margin: 0 0 8px;            /* Отступ снизу */
+    font-size: 24px;            /* Размер шрифта */
+}
+
+.events-subtitle {
+    margin: 0 0 32px;           /* Отступ снизу */
+    color: #888;                /* Серый цвет */
+    font-size: 14px;            /* Размер шрифта */
+}
+
+.events-list {
+    display: flex;              /* Flex-контейнер */
+    flex-direction: column;     /* Вертикальное расположение */
+    gap: 10px;                 /* Расстояние между событиями */
+}
+
+.event-item {
+    display: flex;              /* Flex-контейнер */
+    align-items: baseline;      /* Выравнивание по базовой линии */
+    gap: 10px;                 /* Расстояние между элементами */
+    padding: 14px 18px;         /* Внутренние отступы */
+    border-radius: 10px;        /* Скругление */
+    font-size: 14px;            /* Размер шрифта */
+    border: 1px solid #e1e4e8;  /* Рамка */
+}
+
+.event-type {
+    font-family: 'Courier New', Courier, monospace;  /* Моноширинный шрифт */
+    font-weight: 700;           /* Жирный */
+    font-size: 12px;            /* Размер шрифта */
+    flex-shrink: 0;             /* Запрет сжатия */
+}
+
+/* Стили для разных типов событий */
+.event-log .event-type,
+.event-err .event-type {
+    color: #ff4d4d;             /* Красный для LOG и ERR */
+}
+
+.event-sys .event-type {
+    color: #00a8ff;             /* Синий для SYS */
+}
+
+.event-message {
+    flex: 1;                    /* Занимает свободное место */
+}
+
+.event-time {
+    font-size: 12px;            /* Размер шрифта */
+    color: #aaa;                /* Светло-серый */
+    flex-shrink: 0;             /* Запрет сжатия */
+}
+
+/* ============================
+   21. ФОРМА ВЫХОДА
+   ============================ */
+
+.logout-form {
+    margin: 0;                  /* Убираем отступы */
+}
+
+.logout-btn {
+    background: none;           /* Убираем фон */
+    border: none;               /* Убираем рамку */
+    cursor: pointer;            /* Курсор-указатель */
+    font-size: 14px;            /* Размер шрифта */
+    color: white;               /* Белый цвет */
+    font-family: inherit;       /* Наследуем шрифт */
+}
+
+/* ============================
+   22. НЕ ИСПОЛЬЗУЕТСЯ (ОСТАВЛЕНО ДЛЯ СОВМЕСТИМОСТИ)
+   ============================ */
+
+/* Эти классы не используются, но оставлены для возможного расширения */
+.no-chat-selected h3 {
+    margin: 0 0 10px;           /* Отступ снизу */
+    color: #333;                /* Темный цвет */
+}
