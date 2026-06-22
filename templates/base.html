@@ -1,0 +1,150 @@
+<!-- ============================
+     БАЗОВЫЙ ШАБЛОН (base.html)
+     Основной макет для всех страниц приложения
+     Использует Jinja2 для динамического контента
+     ============================ -->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <!-- ============================
+         МЕТА-ДАННЫЕ
+         ============================ -->
+    
+    <!-- Кодировка UTF-8 для поддержки русского языка -->
+    <meta charset="UTF-8">
+    
+    <!-- Настройка для мобильных устройств -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Заголовок страницы (можно переопределить в дочерних шаблонах) -->
+    <title>{% block title %}ADI CHAT{% endblock %}</title>
+    
+    <!-- Подключение основных стилей -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+    <!-- Блок для дополнительных стилей в дочерних шаблонах -->
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <!-- ============================
+         ОСНОВНОЙ МАКЕТ ПРИЛОЖЕНИЯ
+         ============================ -->
+    
+    <div class="app-layout">
+
+        <!-- ============================
+             БОКОВАЯ ПАНЕЛЬ (SIDEBAR)
+             ============================ -->
+        
+        <aside class="sidebar">
+            
+            <!-- Верхняя часть панели с кнопкой "Назад" -->
+            <div class="sidebar-top">
+                {% if show_back %}
+                <a href="{{ back_url or '/chat' }}" class="back-btn" aria-label="Назад">←</a>
+                {% endif %}
+            </div>
+
+            <!-- Блок с содержимым боковой панели (можно переопределить) -->
+            {% block sidebar_content %}
+            
+            <!-- Заголовок панели с именем пользователя -->
+            <div class="sidebar-header">
+                <span>Все сообщения</span>
+                <a href="/profile" class="current-user-badge">{{ current_user.username }}</a>
+            </div>
+            
+            <!-- Список чатов/контактов -->
+            <div class="chats-list">
+                {% if chats %}
+                    <!-- Перебираем все чаты -->
+                    {% for chat in chats %}
+                    <a href="/chat?with_user={{ chat.id }}" class="chat-item {% if chat.active %}active{% endif %}">
+                        <!-- Аватарка с цветом пользователя -->
+                        <div class="avatar" style="background-color: {{ chat.color }};"></div>
+                        <!-- Информация о пользователе -->
+                        <div class="chat-info">
+                            <div class="name">{{ chat.username }}</div>
+                            <div class="status">{{ chat.status }}</div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <!-- Сообщение, если нет контактов -->
+                    <div class="empty-state">Пока нет других пользователей</div>
+                {% endif %}
+            </div>
+            {% endblock %}
+
+            <!-- ============================
+                 НИЖНЯЯ НАВИГАЦИЯ
+                 ============================ -->
+            
+            <nav class="bottom-nav">
+                <!-- Кнопка "Чат" -->
+                <a href="/chat" class="nav-btn {% if active_nav == 'chat' %}active{% endif %}">
+                    <span class="nav-icon">💬</span>
+                    <span>Чат</span>
+                </a>
+                
+                <!-- Кнопка "Журнал событий" -->
+                <a href="/events" class="nav-btn {% if active_nav == 'events' %}active{% endif %}">
+                    <span class="nav-icon">📋</span>
+                    <span>Журнал событий</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- ============================
+             ОСНОВНОЙ КОНТЕНТ
+             ============================ -->
+        
+        <main class="main-content">
+            <!-- Блок для основного контента (переопределяется в дочерних шаблонах) -->
+            {% block main %}{% endblock %}
+        </main>
+
+        <!-- ============================
+             ПАНЕЛЬ КОНСОЛИ (ЛОГИ)
+             ============================ -->
+        
+        <aside class="console-panel">
+            <!-- Заголовок панели -->
+            <div class="console-title">CONSOLE LOGS</div>
+            
+            <!-- Контейнер для логов -->
+            <div id="logsContainer">
+                <!-- Перебираем все логи -->
+                {% for log in logs %}
+                    <!-- Если лог типа LOG или ERR - красный -->
+                    {% if log.log_type == 'LOG' or log.log_type == 'ERR' %}
+                        <div class="log-entry red">[{{ log.log_type }}]: {{ log.message }}</div>
+                    {% else %}
+                        <!-- Иначе - синий (SYS) -->
+                        <div class="log-entry blue">[SYS]: {{ log.message }}</div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- ============================
+         БЛОК МОДАЛЬНЫХ ОКОН
+         ============================ -->
+    
+    <!-- Блок для модальных окон (можно добавить в дочерних шаблонах) -->
+    {% block modals %}{% endblock %}
+
+    <!-- ============================
+         ПОДКЛЮЧЕНИЕ JAVASCRIPT
+         ============================ -->
+    
+    <!-- Основной JavaScript файл -->
+    <script src="/static/js/app.js"></script>
+    
+    <!-- Блок для дополнительных скриптов в дочерних шаблонах -->
+    {% block scripts %}{% endblock %}
+</body>
+</html>
